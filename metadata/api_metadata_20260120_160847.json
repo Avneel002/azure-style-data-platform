@@ -1,0 +1,21 @@
+{
+  "source": "API",
+  "source_type": "User Profiles",
+  "endpoint": "https://jsonplaceholder.typicode.com/users",
+  "ingestion_time": "20260120_160847",
+  "record_count": 10,
+  "columns": [
+    "id",
+    "name",
+    "username",
+    "email",
+    "phone",
+    "website",
+    "city",
+    "street",
+    "zipcode",
+    "company_name",
+    "ingestion_timestamp"
+  ],
+  "status_code": 200
+}
