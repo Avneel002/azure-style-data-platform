@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-01-21T10:25:53.278262",
+  "source_type": "csv",
+  "initial_record_count": 5,
+  "final_record_count": 2,
+  "records_removed": 3,
+  "checks": [
+    {
+      "check": "Schema Validation",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "check": "Null Handling",
+      "status": "PASSED",
+      "details": "Removed 1 rows"
+    },
+    {
+      "check": "Deduplication",
+      "status": "PASSED",
+      "details": "Removed 1 duplicates"
+    },
+    {
+      "check": "Type Enforcement",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "check": "Business Rules",
+      "status": "PASSED",
+      "details": ""
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Null values detected: {'product_id': 1}"
+  ],
+  "status": "PASSED"
+}

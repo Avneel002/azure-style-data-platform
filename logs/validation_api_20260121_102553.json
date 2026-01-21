@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-01-21T10:25:53.297819",
+  "source_type": "api",
+  "initial_record_count": 4,
+  "final_record_count": 2,
+  "records_removed": 2,
+  "checks": [
+    {
+      "check": "Schema Validation",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "check": "Null Handling",
+      "status": "PASSED",
+      "details": "Filled defaults"
+    },
+    {
+      "check": "Deduplication",
+      "status": "PASSED",
+      "details": "Removed 1 duplicates"
+    },
+    {
+      "check": "Type Enforcement",
+      "status": "PASSED",
+      "details": ""
+    },
+    {
+      "check": "Business Rules",
+      "status": "PASSED",
+      "details": ""
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Null values detected: {'phone': 2, 'website': 1}"
+  ],
+  "status": "PASSED"
+}
