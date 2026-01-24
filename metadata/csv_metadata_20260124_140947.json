@@ -1,0 +1,18 @@
+{
+  "source": "CSV",
+  "source_type": "Sales Transactions",
+  "filename": "sales_raw_20260124_140947.csv",
+  "ingestion_time": "20260124_140947",
+  "record_count": 100,
+  "columns": [
+    "transaction_id",
+    "date",
+    "product_id",
+    "customer_id",
+    "quantity",
+    "unit_price",
+    "region",
+    "total_amount"
+  ],
+  "file_size_bytes": 5834
+}
