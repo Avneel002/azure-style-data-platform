@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure-Style Data Platform | Avneel Goundar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+
+<header class="azure-header">
+    <div class="header-content">
+        <div class="logo">
+            <div class="azure-icon">AG</div>
+            <span class="project-name">Azure-Style Data Engineering Platform</span>
+        </div>
+
+        <nav class="main-nav">
+            <a href="index.html" class="active">Overview</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">
+                GitHub →
+            </a>
+        </nav>
+    </div>
+</header>
+
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Enterprise-Grade Data Engineering Platform</h1>
+            <p class="subtitle">
+                Zero-Cost Azure Architecture | CR-2026-0012 Portfolio Project
+            </p>
+
+            <div class="status-badge success">
+                <span>✓</span>
+                Production-Ready Architecture
+            </div>
+
+            <div class="hero-actions">
+                <a href="architecture.html" class="btn btn-primary">View Architecture</a>
+                <a href="analytics.html" class="btn btn-secondary">Explore Analytics</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section">
+    <div class="container">
+        <div class="card">
+            <h2>Executive Summary</h2>
+            <p>
+                This project implements an enterprise-style data engineering platform that mirrors
+                Microsoft Azure architectures while operating at zero cost. Built against a simulated
+                client change request (CR-2026-0012), it demonstrates real-world data engineering
+                practices suitable for graduate and junior-level roles.
+            </p>
+
+            <div class="key-points">
+                <div class="point">
+                    <div class="point-icon azure">🏗️</div>
+                    <div class="point-content">
+                        <h3>Azure-Aligned Design</h3>
+                        <p>Patterns inspired by Azure Data Factory, SQL Database, and Synapse Analytics</p>
+                    </div>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon green">💰</div>
+                    <div class="point-content">
+                        <h3>Zero Cloud Costs</h3>
+                        <p>Fully functional proof-of-concept using local tooling and GitHub Pages</p>
+                    </div>
+                </div>
+
+                <div class="point">
+                    <div class="point-icon purple">🚀</div>
+                    <div class="point-content">
+                        <h3>Migration Ready</h3>
+                        <p>Designed for straightforward migration to Azure services with minimal refactoring</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Architecture Overview</h2>
+
+        <div class="arch-flow">
+            <div class="arch-box bronze">
+                <h3>Bronze Layer</h3>
+                <p>Raw Data Ingestion</p>
+                <ul>
+                    <li>CSV Files</li>
+                    <li>REST APIs</li>
+                </ul>
+            </div>
+
+            <div class="arch-arrow">→</div>
+
+            <div class="arch-box silver">
+                <h3>Silver Layer</h3>
+                <p>Validated & Cleaned</p>
+                <ul>
+                    <li>Schema Validation</li>
+                    <li>Deduplication</li>
+                </ul>
+            </div>
+
+            <div class="arch-arrow">→</div>
+
+            <div class="arch-box gold">
+                <h3>Gold Layer</h3>
+                <p>Analytics Ready</p>
+                <ul>
+                    <li>Star Schema</li>
+                    <li>Business Metrics</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="arch-details">
+            <a href="architecture.html" class="link-button">
+                View Detailed Architecture →
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Technology Stack</h2>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3>Data Processing</h3>
+                <div class="tech-items">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Pandas</span>
+                    <span class="tech-badge">PyArrow</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>Storage & Database</h3>
+                <div class="tech-items">
+                    <span class="tech-badge">SQLite</span>
+                    <span class="tech-badge">SQL</span>
+                    <span class="tech-badge">Parquet</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>Presentation</h3>
+                <div class="tech-items">
+                    <span class="tech-badge">HTML5</span>
+                    <span class="tech-badge">CSS3</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>DevOps</h3>
+                <div class="tech-items">
+                    <span class="tech-badge">Git</span>
+                    <span class="tech-badge">GitHub Pages</span>
+                    <span class="tech-badge">VS Code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Azure Migration Path</h2>
+
+        <div class="card">
+            <p>
+                All components are directly portable to Azure services with minimal refactoring:
+            </p>
+
+            <div class="migration-grid">
+                <div class="migration-item">
+                    <strong>Python Pipeline</strong>
+                    <span>→</span>
+                    <strong>Azure Data Factory</strong>
+                </div>
+
+                <div class="migration-item">
+                    <strong>Local Files</strong>
+                    <span>→</span>
+                    <strong>Azure Blob Storage</strong>
+                </div>
+
+                <div class="migration-item">
+                    <strong>SQLite</strong>
+                    <span>→</span>
+                    <strong>Azure SQL Database</strong>
+                </div>
+
+                <div class="migration-item">
+                    <strong>Static HTML</strong>
+                    <span>→</span>
+                    <strong>Power BI</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Project</h4>
+                <p>CR-2026-0012</p>
+                <p>Azure-Style Data Platform</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Built By</h4>
+                <p>Avneel Goundar</p>
+                <p>Flinders University</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Links</h4>
+                <p><a href="https://github.com/avneel-dataeng" target="_blank">GitHub</a></p>
+                <p><a href="architecture.html">Documentation</a></p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Avneel Goundar</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
