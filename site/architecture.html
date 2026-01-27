@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture | Azure-Style Data Platform</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+/* Architecture page specific styles */
+.pipeline-stages {
+    display: grid;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.stage-card {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: #f3f2f1;
+    border-radius: 8px;
+    border-left: 4px solid #0078d4;
+}
+
+.stage-number {
+    width: 48px;
+    height: 48px;
+    background: #0078d4;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.stage-content h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.stage-content p, .stage-content li {
+    font-size: 14px;
+}
+
+.stage-content ul {
+    margin-left: 20px;
+    margin-top: 12px;
+}
+
+.code-block {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #2d2d2d;
+    color: #d4d4d4;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.dataflow-diagram, .schema-diagram {
+    padding: 32px;
+    background: #f3f2f1;
+    border-radius: 8px;
+    margin-top: 24px;
+}
+
+.dataflow-layer {
+    text-align: center;
+    margin: 24px 0;
+}
+
+.dataflow-layer h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: #0078d4;
+}
+
+.dataflow-box {
+    display: inline-block;
+    padding: 20px;
+    margin: 8px;
+    border-radius: 8px;
+    min-width: 200px;
+    border: 3px solid;
+}
+
+.dataflow-box.source { border-color: #605e5c; background: white; }
+.dataflow-box.bronze { border-color: #cd7f32; background: #fff8f0; }
+.dataflow-box.silver { border-color: #c0c0c0; background: #f8f8f8; }
+.dataflow-box.gold { border-color: #ffd700; background: #fffbf0; }
+.dataflow-box.storage { border-color: #107c10; background: #f0fff0; }
+
+.dataflow-box strong { display: block; font-size: 16px; margin-bottom: 8px; }
+.dataflow-box p { font-size: 13px; color: #605e5c; margin: 4px 0; }
+
+.dataflow-arrow-down {
+    text-align: center;
+    font-size: 32px;
+    color: #0078d4;
+    font-weight: bold;
+    margin: 16px 0;
+}
+
+.schema-center, .schema-dimensions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.schema-table {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    min-width: 200px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.schema-table.fact { border: 3px solid #0078d4; }
+.schema-table.dimension { border: 3px solid #107c10; }
+
+.schema-table h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e1e1e1;
+}
+
+.schema-fields .field {
+    padding: 6px 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+    background: #f3f2f1;
+}
+
+.field.pk { background: #e6f4ff; color: #0078d4; font-weight: 600; }
+.field.fk { background: #d1f0d1; color: #107c10; font-weight: 600; }
+
+.mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.mapping-table th, .mapping-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.mapping-table thead { background: #f3f2f1; }
+.mapping-table th { font-weight: 600; }
+</style>
+</head>
+
+<body>
+
+<header class="azure-header">
+    <div class="header-content">
+        <div class="logo">
+            <div class="azure-icon">AG</div>
+            <span class="project-name">Azure-Style Data Engineering Platform</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Overview</a>
+            <a href="architecture.html" class="active">Architecture</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">GitHub →</a>
+        </nav>
+    </div>
+</header>
+
+<div class="breadcrumb">
+    <div class="container">
+        <a href="index.html">Home</a> <span>›</span> Architecture
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <h1 class="page-title">System Architecture</h1>
+        <p class="page-subtitle">Enterprise data engineering design patterns using Azure-aligned architecture</p>
+
+        <!-- Pipeline Overview -->
+        <div class="card">
+            <h2>Data Pipeline Overview</h2>
+            <p>Medallion architecture: Bronze → Silver → Gold with Azure-aligned best practices.</p>
+
+            <div class="pipeline-stages">
+                <!-- Stage 1 -->
+                <div class="stage-card">
+                    <div class="stage-number">1</div>
+                    <div class="stage-content">
+                        <h3>Ingestion (Bronze Layer)</h3>
+                        <p><strong>Azure:</strong> Data Factory | <strong>Local:</strong> Python scripts</p>
+                        <ul>
+                            <li>CSV & REST API ingestion</li>
+                            <li>Timestamp-based versioning</li>
+                            <li>Metadata capture & logging</li>
+                        </ul>
+                        <div class="code-block">pipeline/ingest.py</div>
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="stage-card">
+                    <div class="stage-number">2</div>
+                    <div class="stage-content">
+                        <h3>Validation (Silver Layer)</h3>
+                        <p><strong>Azure:</strong> Data Factory + Data Quality | <strong>Local:</strong> Pandas</p>
+                        <ul>
+                            <li>Schema validation & null handling</li>
+                            <li>Deduplication & type enforcement</li>
+                            <li>Business rule checks</li>
+                        </ul>
+                        <div class="code-block">pipeline/validate.py</div>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="stage-card">
+                    <div class="stage-number">3</div>
+                    <div class="stage-content">
+                        <h3>Transformation (Gold Layer)</h3>
+                        <p><strong>Azure:</strong> Synapse / Databricks | <strong>Local:</strong> Pandas</p>
+                        <ul>
+                            <li>Star schema modeling</li>
+                            <li>Derived attributes & calculations</li>
+                            <li>Parquet output for analytics</li>
+                        </ul>
+                        <div class="code-block">pipeline/transform.py</div>
+                    </div>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="stage-card">
+                    <div class="stage-number">4</div>
+                    <div class="stage-content">
+                        <h3>Loading (Database Layer)</h3>
+                        <p><strong>Azure:</strong> SQL Database | <strong>Local:</strong> SQLite</p>
+                        <ul>
+                            <li>Star schema database</li>
+                            <li>FK & PK enforcement, indexing</li>
+                            <li>Metadata & summary statistics</li>
+                        </ul>
+                        <div class="code-block">storage/sqlite_loader.py</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Project</h4>
+                <p>CR-2026-0012 | Azure-Style Data Platform</p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <p><a href="index.html">Overview</a></p>
+                <p><a href="analytics.html">Analytics</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Avneel Goundar. Portfolio demonstration project.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
