@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | Azure-Style Data Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .metrics-grid-large {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .metric-card-large {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 4px solid;
+        }
+        .metric-card-large.primary { border-left-color: #0078d4; }
+        .metric-card-large.success { border-left-color: #107c10; }
+        .metric-card-large.warning { border-left-color: #ff8c00; }
+        .metric-card-large.info { border-left-color: #5c2d91; }
+        .metric-info { flex: 1; }
+        .metric-label {
+            font-size: 13px;
+            color: #605e5c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #323130;
+        }
+        .metric-change {
+            font-size: 13px;
+            color: #605e5c;
+            margin-top: 4px;
+        }
+        .analytics-table-container { overflow-x: auto; }
+        .analytics-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .analytics-table thead { background: #f3f2f1; }
+        .analytics-table th,
+        .analytics-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        .analytics-table th {
+            font-weight: 600;
+            color: #323130;
+        }
+        .analytics-table tbody tr:hover { background: #fafafa; }
+        .analytics-table tfoot {
+            background: #f3f2f1;
+            font-weight: 600;
+        }
+        .quality-grid { display: grid; gap: 16px; }
+        .quality-item {
+            padding: 16px;
+            background: #f3f2f1;
+            border-radius: 8px;
+        }
+        .quality-label { font-weight: 600; margin-bottom: 8px; }
+        .quality-bar {
+            height: 24px;
+            background: #e1e1e1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .quality-fill { height: 100%; }
+        .quality-value { font-size: 14px; color: #605e5c; }
+        .execution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        .execution-stage {
+            padding: 20px;
+            background: #f3f2f1;
+            border-radius: 8px;
+        }
+        .execution-stage h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #0078d4;
+        }
+        .execution-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e1e1;
+            font-size: 14px;
+        }
+        .execution-detail:last-child { border-bottom: none; }
+        .detail-label { color: #605e5c; }
+        .detail-value { font-weight: 600; }
+        .info-card {
+            background: #e6f4ff;
+            border-left: 4px solid #0078d4;
+        }
+    </style>
+</head>
+<body>
+<header class="azure-header">
+    <div class="header-content">
+        <div class="logo">
+            <div class="azure-icon">AG</div>
+            <span class="project-name">Azure-Style Data Engineering Platform</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Overview</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="analytics.html" class="active">Analytics</a>
+            <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">GitHub →</a>
+        </nav>
+    </div>
+</header>
+
+<div class="breadcrumb">
+    <div class="container">
+        <a href="index.html">Home</a> <span>›</span> Analytics
+    </div>
+</div>
+
+<section class="section">
+<div class="container">
+    <h1 class="page-title">Business Analytics</h1>
+    <p class="page-subtitle">Summary metrics derived from the analytical data model</p>
+
+```
+<div class="metrics-grid-large">
+    <div class="metric-card-large primary">
+        <div class="metric-info">
+            <div class="metric-label">Total Transactions</div>
+            <div class="metric-value">100</div>
+            <div class="metric-change">Processed in the sales pipeline</div>
+        </div>
+    </div>
+    <div class="metric-card-large success">
+        <div class="metric-info">
+            <div class="metric-label">Total Revenue</div>
+            <div class="metric-value">$12,750</div>
+            <div class="metric-change">Aggregated from fact table</div>
+        </div>
+    </div>
+    <div class="metric-card-large warning">
+        <div class="metric-info">
+            <div class="metric-label">Total Profit</div>
+            <div class="metric-value">$5,100</div>
+            <div class="metric-change">Derived using cost assumptions</div>
+        </div>
+    </div>
+    <div class="metric-card-large info">
+        <div class="metric-info">
+            <div class="metric-label">Active Customers</div>
+            <div class="metric-value">25</div>
+            <div class="metric-change">Across multiple regions</div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:2rem;">
+    <h2>Sales by Region</h2>
+    <div class="analytics-table-container">
+        <table class="analytics-table">
+            <thead>
+                <tr>
+                    <th>Region</th>
+                    <th>Transactions</th>
+                    <th>Total Revenue</th>
+                    <th>Total Profit</th>
+                    <th>Average Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>North</td><td>25</td><td>$3,187.50</td><td>$1,275.00</td><td>$127.50</td></tr>
+                <tr><td>South</td><td>25</td><td>$3,187.50</td><td>$1,275.00</td><td>$127.50</td></tr>
+                <tr><td>East</td><td>25</td><td>$3,187.50</td><td>$1,275.00</td><td>$127.50</td></tr>
+                <tr><td>West</td><td>25</td><td>$3,187.50</td><td>$1,275.00</td><td>$127.50</td></tr>
+            </tbody>
+            <tfoot>
+                <tr><td>Total</td><td>100</td><td>$12,750.00</td><td>$5,100.00</td><td>$127.50</td></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="card" style="margin-top:2rem;">
+    <h2>Data Quality Summary</h2>
+    <div class="quality-grid">
+        <div class="quality-item">
+            <div class="quality-label">Completeness</div>
+            <div class="quality-bar"><div class="quality-fill" style="width:100%;background:#107c10;"></div></div>
+            <div class="quality-value">No missing required fields detected</div>
+        </div>
+        <div class="quality-item">
+            <div class="quality-label">Duplicates</div>
+            <div class="quality-bar"><div class="quality-fill" style="width:0%;background:#107c10;"></div></div>
+            <div class="quality-value">No duplicate primary keys found</div>
+        </div>
+    </div>
+</div>
+
+<div class="card info-card" style="margin-top:2rem;">
+    <h3>Implementation Notes</h3>
+    <ul style="margin-left:1.5rem;line-height:1.8;">
+        <li>Metrics are calculated using SQL aggregations over the star schema</li>
+        <li>Transformations are applied prior to loading into the database</li>
+        <li>Figures shown reflect a single pipeline execution</li>
+        <li>This dashboard is a static representation for portfolio purposes</li>
+    </ul>
+</div>
+```
+
+</div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Project Information</h4>
+                <p>CR-2026-0012 | Azure-Style Data Platform</p>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <p><a href="index.html">Overview</a></p>
+                <p><a href="architecture.html">Architecture</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Avneel Goundar. Portfolio project.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

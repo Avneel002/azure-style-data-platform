@@ -23,8 +23,6 @@ def transform_csv_data(df):
     df_product["product_category"] = df_product["product_id"].apply(
         lambda x: f"Category_{int(x.replace('PROD', '')) % 3 + 1}"
     )
-
-    # ====== Make dim_customer duplicate-safe ======
     total_customers = df["customer_id"].nunique()
     df_customer = (
         df.sort_values("date")
@@ -36,8 +34,6 @@ def transform_csv_data(df):
     if duplicates_removed > 0:
         print(f"⚠ {duplicates_removed} duplicate customer(s) removed to ensure UNIQUE customer_id")
     df_customer["customer_key"] = range(1, len(df_customer) + 1)
-    # ========================================================
-
     df_fact = (
         df.merge(df_time[["date", "date_id"]], on="date", how="left")
           .merge(df_product[["product_id", "product_key"]], on="product_id", how="left")
@@ -115,7 +111,6 @@ def save_transformed_data(data, source_type):
 def transform_data(df, source_type):
     if source_type == "csv":
         transformed = transform_csv_data(df)
-        # Log duplicate info for CSV customers
         dim_customer = transformed.get("dim_customer")
         if dim_customer is not None:
             total = df["customer_id"].nunique()
