@@ -29,7 +29,7 @@ def log_ingestion(source_type, status, record_count, error=None):
 
 
 def ingest_csv():
-    print("Ingesting CSV data source (Sales Transactions)...")
+    print("  → Ingesting CSV data source (Sales Transactions)...")
     try:
         sample_data = {
             'transaction_id': [f'TXN{str(i).zfill(6)}' for i in range(1, 101)],
@@ -58,9 +58,9 @@ def ingest_csv():
         with open(metadata_file, "w") as f:
             json.dump(metadata, f, indent=2)
         log_ingestion("CSV", "SUCCESS", len(df))
-        print(f"Ingested {len(df)} records from CSV")
-        print(f"Saved to: {raw_file}")
-        print(f"Metadata: {metadata_file}")
+        print(f"    ✓ Ingested {len(df)} records from CSV")
+        print(f"    ✓ Saved to: {raw_file}")
+        print(f"    ✓ Metadata: {metadata_file}")
         return df
     except Exception as e:
         log_ingestion("CSV", "FAILED", 0, str(e))
@@ -68,10 +68,10 @@ def ingest_csv():
 
 
 def ingest_api():
-    print("Ingesting API data source (User Profiles)...")
+    print("  → Ingesting API data source (User Profiles)...")
     try:
         api_url = "https://jsonplaceholder.typicode.com/users"
-        print(f"Calling API: {api_url}")
+        print(f"    → Calling API: {api_url}")
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()
         api_data = response.json()
@@ -103,10 +103,14 @@ def ingest_api():
         with open(metadata_file, "w") as f:
             json.dump(metadata, f, indent=2)
         log_ingestion("API", "SUCCESS", len(df))
-        print(f"Ingested {len(df)} records from API")
-        print(f"Endpoint: {api_url}")
-        print(f"Saved to: {raw_file}")
-        print(f"Metadata: {metadata_file}")
+        print(f"    ✓ Ingested {len(df)} records from API")
+        print(f"    ✓ Endpoint: {api_url}")
+        print(f"    ✓ Saved to: {raw_file}")
+        print(f"    ✓ Metadata: {metadata_file}")
+        
+        # Export ingestion summary for website (after both sources are done)
+        export_ingestion_summary()
+        
         return df
     except requests.exceptions.RequestException as e:
         log_ingestion("API", "FAILED", 0, str(e))
@@ -114,6 +118,40 @@ def ingest_api():
     except Exception as e:
         log_ingestion("API", "FAILED", 0, str(e))
         raise Exception(f"API processing failed: {str(e)}")
+
+
+def export_ingestion_summary():
+    """Export ingestion summary for website"""
+    output_dir = Path("site/data")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    log_file = LOGS_DIR / "ingestion.log"
+
+    summary = {
+        "stage": "ingestion",
+        "status": "NOT_RUN",
+        "timestamp": None,
+        "sources": []
+    }
+
+    if log_file.exists():
+        with open(log_file, 'r') as f:
+            lines = f.readlines()
+            if lines:
+                recent_lines = lines[-2:] if len(lines) >= 2 else lines
+                try:
+                    recent_logs = [json.loads(line.strip()) for line in recent_lines if line.strip()]
+                    summary["status"] = "SUCCESS"
+                    summary["timestamp"] = datetime.now().isoformat()
+                    summary["sources"] = recent_logs
+                except json.JSONDecodeError as e:
+                    print(f"    ⚠ Warning: Could not parse ingestion log: {e}")
+    
+    output_file = output_dir / "ingestion.json"
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+
+    print(f"    ✓ Exported ingestion summary to: {output_file}")
+    return summary
 
 
 if __name__ == "__main__":
@@ -132,5 +170,5 @@ if __name__ == "__main__":
     print("\nSample data preview:")
     print(api_df.head(3))
     print("\n" + "="*60)
-    print("INGESTION MODULE TEST COMPLETE")
+    print("✓ INGESTION MODULE TEST COMPLETE")
     print("="*60)

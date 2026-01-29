@@ -241,3 +241,102 @@ class ContosoDatabase:
             ORDER BY SUM(s.revenue) DESC
         """)
         return cursor.fetchall()
+
+
+def load_to_database(csv_transformed, api_transformed):
+    """Load transformed data to database"""
+    print("  → Loading data to database...")
+    
+    db = ContosoDatabase()
+    
+    try:
+        db.connect()
+        db.create_schema()
+        
+        print("\n  → Loading sales data...")
+        start_time = datetime.now()
+        
+        dim_time_count = db.load_dimension(csv_transformed['dim_time'], 'dim_time')
+        print(f"    ✓ Loaded {dim_time_count} time dimension records")
+        
+        dim_product_count = db.load_dimension(csv_transformed['dim_product'], 'dim_product')
+        print(f"    ✓ Loaded {dim_product_count} product dimension records")
+        
+        dim_customer_count = db.load_dimension(csv_transformed['dim_customer'], 'dim_customer')
+        print(f"    ✓ Loaded {dim_customer_count} customer dimension records")
+        
+        fact_sales_count = db.load_fact(csv_transformed['fact_sales'], 'fact_sales')
+        print(f"    ✓ Loaded {fact_sales_count} sales fact records")
+        
+        csv_time = (datetime.now() - start_time).total_seconds()
+        db.log_pipeline_run('LOAD', 'CSV', fact_sales_count, 'SUCCESS', exec_time=csv_time)
+        
+        print("\n  → Loading user data...")
+        start_time = datetime.now()
+        
+        dim_user_count = db.load_dimension(api_transformed['dim_user'], 'dim_user')
+        print(f"    ✓ Loaded {dim_user_count} user dimension records")
+        
+        api_time = (datetime.now() - start_time).total_seconds()
+        db.log_pipeline_run('LOAD', 'API', dim_user_count, 'SUCCESS', exec_time=api_time)
+        print("\n  → Generating summary statistics...")
+        stats = db.get_summary_stats()
+        
+        print("\n  " + "="*58)
+        print("  DATABASE SUMMARY")
+        print("  " + "="*58)
+        
+        if 'sales' in stats:
+            print(f"  Total Transactions:     {stats['sales']['total_transactions']:,}")
+            print(f"  Total Revenue:          ${stats['sales']['total_revenue']:,.2f}")
+            print(f"  Total Profit:           ${stats['sales']['total_profit']:,.2f}")
+            print(f"  Avg Transaction Value:  ${stats['sales']['avg_transaction_value']:,.2f}")
+            print(f"  Avg Profit Margin:      {stats['sales']['avg_profit_margin']:.2f}%")
+        
+        print(f"  Total Products:         {stats['total_products']}")
+        print(f"  Total Customers:        {stats['total_customers']}")
+        print(f"  Total Users:            {stats['total_users']}")
+        print("  " + "="*58)
+        
+        print("\n  → Sales by Region:")
+        print("  " + "-"*58)
+        regions = db.get_sales_by_region()
+        for region, trans, revenue, profit, avg_trans in regions:
+            print(f"  {region:10s} | {trans:3d} trans | ${revenue:10,.2f} | ${profit:9,.2f}")
+        print("  " + "-"*58)
+        
+        print(f"\n  ✓ Database location: {db.db_path}")
+        print(f"  ✓ All data loaded successfully")
+        export_database_summary(stats)
+        
+        return stats
+        
+    except Exception as e:
+        db.log_pipeline_run('LOAD', 'ERROR', 0, 'FAILED', str(e))
+        raise Exception(f"Database loading failed: {str(e)}")
+    
+    finally:
+        db.close()
+
+
+def export_database_summary(stats):
+    """Export database summary for website"""
+    import json
+    from pathlib import Path
+    
+    output_dir = Path("site/data")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    summary = {
+        "stage": "database",
+        "status": "SUCCESS",
+        "timestamp": datetime.now().isoformat(),
+        "statistics": stats,
+        "database_location": str(DB_PATH)
+    }
+    
+    output_file = output_dir / "database.json"
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+    
+    print(f"  ✓ Exported database summary to: {output_file}")

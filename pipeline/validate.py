@@ -164,6 +164,7 @@ def validate_data(df, source_type):
         report.save()
 
         print(f"Validation finished. Records in: {report.initial_count}, records out: {report.final_count}")
+        export_validation_summary()
         return df_validated
 
     except Exception as e:
@@ -202,3 +203,39 @@ if __name__ == "__main__":
     print(validated_api.head())
 
     print("VALIDATION MODULE TEST COMPLETE")
+
+def export_validation_summary():
+    import json
+    from pathlib import Path
+    from datetime import datetime
+
+    output_dir = Path("site/data")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    validation_logs = sorted(LOGS_DIR.glob("validation_*.json"))
+
+    if validation_logs:
+        summaries = []
+        for log_file in validation_logs[-2:]:
+            with open(log_file, 'r') as f:
+                summaries.append(json.load(f))
+        summary = {
+            "stage": "validation",
+            "status": "SUCCESS",
+            "timestamp": datetime.now().isoformat(),
+            "validations": summaries
+        }
+    else:
+        summary = {
+            "stage": "validation",
+            "status": "NOT_RUN",
+            "timestamp": None,
+            "validations": []
+        }
+
+    output_file = output_dir / "validation.json"
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+
+    return summary
+

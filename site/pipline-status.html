@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Status | Azure-Style Data Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .status-grid {
+            display: grid;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .stage-status {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #0078d4;
+        }
+
+        .stage-status.success {
+            border-left-color: #107c10;
+        }
+
+        .stage-status.pending {
+            border-left-color: #ff8c00;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stage-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d1f0d1;
+            color: #107c10;
+        }
+
+        .status-badge.pending {
+            background: #fff4ce;
+            color: #ff8c00;
+        }
+
+        .stage-details {
+            display: grid;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .detail-label {
+            color: #605e5c;
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #107c10;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <header class="azure-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="azure-icon">AG</div>
+                <span class="project-name">Azure-Style Data Engineering Platform</span>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html">Overview</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="analytics.html">Analytics</a>
+                <a href="pipeline-status.html" class="active">Pipeline Status</a>
+                <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">
+                    GitHub →
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> <span>›</span> Pipeline Status
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="page-title">
+                <span class="live-indicator"></span>
+                Live Pipeline Status
+            </h1>
+            <p class="page-subtitle">Real-time data from Python pipeline execution</p>
+
+            <div class="status-grid" id="pipelineStatus">
+                <div class="card">
+                    <p style="text-align: center; color: #605e5c;">
+                        Loading pipeline data...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Project Information</h4>
+                    <p>CR-2026-0012 | Azure-Style Data Platform</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <p><a href="index.html">Overview</a></p>
+                    <p><a href="architecture.html">Architecture</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Avneel Goundar. Portfolio demonstration project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        async function loadPipelineStatus() {
+            const container = document.getElementById('pipelineStatus');
+            
+            try {
+                const [ingestion, validation, transformation, database] = await Promise.all([
+                    fetch('data/ingestion.json').then(r => r.json()).catch(() => null),
+                    fetch('data/validation.json').then(r => r.json()).catch(() => null),
+                    fetch('data/transformation.json').then(r => r.json()).catch(() => null),
+                    fetch('data/database.json').then(r => r.json()).catch(() => null)
+                ]);
+
+                let html = '';
+                if (ingestion) {
+                    const csvSource = ingestion.sources.find(s => s.source_type === 'CSV');
+                    const apiSource = ingestion.sources.find(s => s.source_type === 'API');
+                    
+                    html += `
+                        <div class="stage-status success">
+                            <div class="stage-header">
+                                <div class="stage-title">Stage 1: Ingestion (Bronze Layer)</div>
+                                <span class="status-badge success">✓ ${ingestion.status}</span>
+                            </div>
+                            <div class="stage-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">CSV Records Ingested:</span>
+                                    <span class="detail-value">${csvSource ? csvSource.record_count : 0}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">API Records Ingested:</span>
+                                    <span class="detail-value">${apiSource ? apiSource.record_count : 0}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Last Run:</span>
+                                    <span class="detail-value">${new Date(ingestion.timestamp).toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                if (validation && validation.validations.length > 0) {
+                    const csvVal = validation.validations.find(v => v.source_type === 'csv');
+                    const apiVal = validation.validations.find(v => v.source_type === 'api');
+                    
+                    html += `
+                        <div class="stage-status success">
+                            <div class="stage-header">
+                                <div class="stage-title">Stage 2: Validation (Silver Layer)</div>
+                                <span class="status-badge success">✓ ${validation.status}</span>
+                            </div>
+                            <div class="stage-details">
+                                ${csvVal ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">CSV Records Validated:</span>
+                                    <span class="detail-value">${csvVal.final_record_count}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">CSV Records Removed:</span>
+                                    <span class="detail-value">${csvVal.records_removed}</span>
+                                </div>
+                                ` : ''}
+                                ${apiVal ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">API Records Validated:</span>
+                                    <span class="detail-value">${apiVal.final_record_count}</span>
+                                </div>
+                                ` : ''}
+                                <div class="detail-row">
+                                    <span class="detail-label">Validation Checks:</span>
+                                    <span class="detail-value">${(csvVal?.checks.length || 0) + (apiVal?.checks.length || 0)} passed</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                if (transformation) {
+                    html += `
+                        <div class="stage-status success">
+                            <div class="stage-header">
+                                <div class="stage-title">Stage 3: Transformation (Gold Layer)</div>
+                                <span class="status-badge success"> ${transformation.status}</span>
+                            </div>
+                            <div class="stage-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Fact Sales Records:</span>
+                                    <span class="detail-value">${transformation.csv_data.fact_sales_records}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Time Dimension:</span>
+                                    <span class="detail-value">${transformation.csv_data.dim_time_records} records</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Product Dimension:</span>
+                                    <span class="detail-value">${transformation.csv_data.dim_product_records} records</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Customer Dimension:</span>
+                                    <span class="detail-value">${transformation.csv_data.dim_customer_records} records</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">User Dimension:</span>
+                                    <span class="detail-value">${transformation.api_data.dim_user_records} records</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                if (database && database.statistics) {
+                    const stats = database.statistics;
+                    html += `
+                        <div class="stage-status success">
+                            <div class="stage-header">
+                                <div class="stage-title">Stage 4: Database Loading</div>
+                                <span class="status-badge success">✓ ${database.status}</span>
+                            </div>
+                            <div class="stage-details">
+                                ${stats.sales ? `
+                                <div class="detail-row">
+                                    <span class="detail-label">Total Revenue:</span>
+                                    <span class="detail-value">$${stats.sales.total_revenue.toLocaleString()}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Total Profit:</span>
+                                    <span class="detail-value">$${stats.sales.total_profit.toLocaleString()}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Avg Profit Margin:</span>
+                                    <span class="detail-value">${stats.sales.avg_profit_margin.toFixed(2)}%</span>
+                                </div>
+                                ` : ''}
+                                <div class="detail-row">
+                                    <span class="detail-label">Database Location:</span>
+                                    <span class="detail-value">${database.database_location}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (html) {
+                    container.innerHTML = html;
+                    console.log(' Pipeline status loaded successfully!');
+                } else {
+                    container.innerHTML = `
+                        <div class="card">
+                            <h3>No Pipeline Data Available</h3>
+                            <p>Run the pipeline to generate live data:</p>
+                            <pre style="background: #2d2d2d; color: #d4d4d4; padding: 16px; border-radius: 4px; margin-top: 16px;">python run_pipeline.py</pre>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error loading pipeline status:', error);
+                container.innerHTML = `
+                    <div class="card">
+                        <h3> Error Loading Pipeline Data</h3>
+                        <p>Please run the pipeline first:</p>
+                        <pre style="background: #2d2d2d; color: #d4d4d4; padding: 16px; border-radius: 4px; margin-top: 16px;">python run_pipeline.py</pre>
+                    </div>
+                `;
+            }
+        }
+        loadPipelineStatus();
+        setInterval(loadPipelineStatus, 30000);
+    </script>
+</body>
+</html>

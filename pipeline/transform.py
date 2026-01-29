@@ -148,3 +148,34 @@ def generate_summary_stats(data, source_type):
         }
 
     return {}
+
+def export_transformation_summary(csv_result, api_result):
+    import json
+    from pathlib import Path
+    from datetime import datetime
+
+    output_dir = Path("site/data")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    summary = {
+        "stage": "transformation",
+        "status": "SUCCESS",
+        "timestamp": datetime.now().isoformat(),
+        "csv_data": {
+            "tables_created": len(csv_result),
+            "fact_sales_records": len(csv_result.get('fact_sales', [])),
+            "dim_time_records": len(csv_result.get('dim_time', [])),
+            "dim_product_records": len(csv_result.get('dim_product', [])),
+            "dim_customer_records": len(csv_result.get('dim_customer', []))
+        },
+        "api_data": {
+            "tables_created": len(api_result),
+            "dim_user_records": len(api_result.get('dim_user', []))
+        }
+    }
+
+    output_file = output_dir / "transformation.json"
+    with open(output_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+
+    return summary

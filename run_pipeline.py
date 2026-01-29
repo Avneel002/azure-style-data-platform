@@ -35,6 +35,45 @@ def print_footer(start_time):
     print(f"Time:  {duration:.2f} seconds")
     print("=" * 60)
 
+from pathlib import Path
+from datetime import datetime
+import json
+
+
+def export_summary_json(stats):
+    """
+    Export pipeline summary statistics for frontend consumption.
+    """
+    output_dir = Path("site/data")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    summary = {
+        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "pipeline_status": "success",
+        "metrics": {
+            "total_transactions": stats.get("sales", {}).get("total_transactions", 0),
+            "total_revenue": stats.get("sales", {}).get("total_revenue", 0),
+            "total_profit": stats.get("sales", {}).get("total_profit", 0),
+            "avg_transaction_value": stats.get("sales", {}).get("avg_transaction_value", 0),
+            "avg_profit_margin": stats.get("sales", {}).get("avg_profit_margin", 0),
+            "total_customers": stats.get("total_customers", 0),
+            "total_products": stats.get("total_products", 0),
+            "total_users": stats.get("total_users", 0),
+        },
+        "data_quality": {
+            "completeness": stats.get("data_quality", {}).get("completeness"),
+            "schema_validation": stats.get("data_quality", {}).get("schema_validation"),
+            "duplicates_found": stats.get("data_quality", {}).get("duplicates_found"),
+            "business_rule_compliance": stats.get("data_quality", {}).get("business_rule_compliance"),
+        },
+    }
+
+    output_file = output_dir / "summary.json"
+    with output_file.open("w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2)
+
+    print(f"Summary written to {output_file}")
+    return output_file
 
 def main():
     start_time = datetime.now()

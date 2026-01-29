@@ -1,0 +1,21 @@
+{
+  "stage": "ingestion",
+  "status": "SUCCESS",
+  "timestamp": "2026-01-29T15:59:40.775549",
+  "sources": [
+    {
+      "timestamp": "2026-01-29T15:59:40.443976",
+      "source_type": "CSV",
+      "status": "SUCCESS",
+      "record_count": 100,
+      "error": null
+    },
+    {
+      "timestamp": "2026-01-29T15:59:40.767541",
+      "source_type": "API",
+      "status": "SUCCESS",
+      "record_count": 10,
+      "error": null
+    }
+  ]
+}

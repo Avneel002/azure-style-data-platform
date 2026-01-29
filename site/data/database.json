@@ -1,0 +1,20 @@
+{
+  "stage": "database",
+  "status": "SUCCESS",
+  "timestamp": "2026-01-29T15:59:40.948406",
+  "statistics": {
+    "sales": {
+      "total_transactions": 100,
+      "total_revenue": 21875.0,
+      "total_profit": 8750.0,
+      "avg_transaction_value": 218.75,
+      "total_quantity": 300,
+      "avg_profit_margin": 40.0
+    },
+    "total_products": 10,
+    "total_customers": 25,
+    "total_users": 10,
+    "total_time_records": 100
+  },
+  "database_location": "storage\\contoso_analytics.db"
+}

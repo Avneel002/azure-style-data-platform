@@ -1,0 +1,81 @@
+{
+  "stage": "validation",
+  "status": "SUCCESS",
+  "timestamp": "2026-01-29T15:59:40.796523",
+  "validations": [
+    {
+      "timestamp": "2026-01-29T15:57:03.639901",
+      "source_type": "csv",
+      "initial_record_count": 100,
+      "final_record_count": 100,
+      "records_removed": 0,
+      "checks": [
+        {
+          "check": "Schema Validation",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Null Check",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Deduplication",
+          "status": "PASSED",
+          "details": "Removed 0 duplicates"
+        },
+        {
+          "check": "Type Enforcement",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Business Rules",
+          "status": "PASSED",
+          "details": ""
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "status": "PASSED"
+    },
+    {
+      "timestamp": "2026-01-29T15:59:40.779918",
+      "source_type": "csv",
+      "initial_record_count": 100,
+      "final_record_count": 100,
+      "records_removed": 0,
+      "checks": [
+        {
+          "check": "Schema Validation",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Null Check",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Deduplication",
+          "status": "PASSED",
+          "details": "Removed 0 duplicates"
+        },
+        {
+          "check": "Type Enforcement",
+          "status": "PASSED",
+          "details": ""
+        },
+        {
+          "check": "Business Rules",
+          "status": "PASSED",
+          "details": ""
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "status": "PASSED"
+    }
+  ]
+}
