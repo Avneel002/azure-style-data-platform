@@ -4,6 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from pipeline.transform import transform_data, export_transformation_summary
 from pipeline.ingest import ingest_csv, ingest_api
 from pipeline.validate import validate_data
 from pipeline.transform import transform_data

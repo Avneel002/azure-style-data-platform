@@ -169,13 +169,15 @@
         </div>
         <nav class="main-nav">
             <a href="index.html">Overview</a>
-            <a href="architecture.html" class="active">Architecture</a>
+            <a href="architecture.html">Architecture</a>
             <a href="analytics.html">Analytics</a>
-            <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">GitHub →</a>
-        </nav>
+            <a href="pipeline-status.html">Pipeline Status</a>
+            <a href="https://github.com/avneel-dataeng/azure-style-data-platform" target="_blank">
+        GitHub →
+    </a>
+</nav>
     </div>
 </header>
-
 <div class="breadcrumb">
     <div class="container">
         <a href="index.html">Home</a> <span>›</span> Architecture
@@ -186,14 +188,11 @@
     <div class="container">
         <h1 class="page-title">System Architecture</h1>
         <p class="page-subtitle">Enterprise data engineering design patterns using Azure-aligned architecture</p>
-
-        <!-- Pipeline Overview -->
         <div class="card">
             <h2>Data Pipeline Overview</h2>
             <p>Medallion architecture: Bronze → Silver → Gold with Azure-aligned best practices.</p>
 
             <div class="pipeline-stages">
-                <!-- Stage 1 -->
                 <div class="stage-card">
                     <div class="stage-number">1</div>
                     <div class="stage-content">
@@ -207,8 +206,6 @@
                         <div class="code-block">pipeline/ingest.py</div>
                     </div>
                 </div>
-
-                <!-- Stage 2 -->
                 <div class="stage-card">
                     <div class="stage-number">2</div>
                     <div class="stage-content">
@@ -222,8 +219,6 @@
                         <div class="code-block">pipeline/validate.py</div>
                     </div>
                 </div>
-
-                <!-- Stage 3 -->
                 <div class="stage-card">
                     <div class="stage-number">3</div>
                     <div class="stage-content">
@@ -237,8 +232,6 @@
                         <div class="code-block">pipeline/transform.py</div>
                     </div>
                 </div>
-
-                <!-- Stage 4 -->
                 <div class="stage-card">
                     <div class="stage-number">4</div>
                     <div class="stage-content">
